@@ -7,17 +7,17 @@ function U {
 # Renames the specified file/file list/folder/folder list in uppercase.
 	CurrentPath="${1}"
     if [ -d "${CurrentPath}" ]; then						# If the file path (Example path: "~/task/bsuir/testfolder").
-    	NameDir="$(dirname "${CurrentPath}")"				# Stored value without folder name(Example: "~/task/bsuir").
-    	NamePath="$(basename "${CurrentPath}")" 			# Stored folder name (Example: "testfolder").
-		NewNamePath=$(echo "${NamePath}" | awk '{print toupper($0)}')		# Сonvert the folder name in upper case.
-    	mv "${CurrentPath}" "${NameDir}/${NewNamePath}"		# Replacing the old path with the new path.
-	elif [ -f "${CurrentPath}" ]; then						# If the directory path (Example path: "~/task/bsuir/testfolder/index.html").
+    	NameDir="$(dirname "${CurrentPath}")"					# Stored value without folder name(Example: "~/task/bsuir").
+    	NamePath="$(basename "${CurrentPath}")" 				# Stored folder name (Example: "testfolder").
+		NewNamePath=$(echo "${NamePath}" | awk '{print toupper($0)}')	# Сonvert the folder name in upper case.
+    	mv "${CurrentPath}" "${NameDir}/${NewNamePath}"				# Replacing the old path with the new path.
+	elif [ -f "${CurrentPath}" ]; then					# If the directory path (Example path: "~/task/bsuir/testfolder/index.html").
 		NameDir="$(dirname "${CurrentPath}")"				# Stored value without folder name(Example: "~/task/bsuir/testfolder").
 		NamePath="$(basename "${CurrentPath}")"				# Stored folder name (Example: "index.html").
-		Extension="${NamePath##*.}"							# Stored file extension (Example: "html").
-		FileName="${NamePath%.*}"							# Stored file name without extension (Example: "index").
-		NewNameFile=$(echo "${FileName}" | awk '{print toupper($0)}')		# Сonvert the file name in upper case.
-		mv "${CurrentPath}" "${NameDir}/${NewNameFile}.${Extension}" 2>/dev/null		# Replacing the old path with the new path.
+		Extension="${NamePath##*.}"					# Stored file extension (Example: "html").
+		FileName="${NamePath%.*}"					# Stored file name without extension (Example: "index").
+		NewNameFile=$(echo "${FileName}" | awk '{print toupper($0)}')	# Сonvert the file name in upper case.
+		mv "${CurrentPath}" "${NameDir}/${NewNameFile}.${Extension}" 2>/dev/null	# Replacing the old path with the new path.
 	else
 		echo -e "\e[91mIt's test failed"
 	fi
@@ -65,7 +65,7 @@ function R {		# Recursive call of u | L | M functions
 	DirList=$(find "${Path}" -type d -printf "%d %p\n"| sort -nr | perl -pe 's/^\d+\s//;')		# Searches all folders and generates a list (from a deeper).
 	echo "${FileList}" | while read CurrentPath		# Gets a list of all files
 	do
-		"${2}" "${CurrentPath}"						# Passes every line to the desired function.
+		"${2}" "${CurrentPath}"				# Passes every line to the desired function.
 	done
 	echo "${DirList}" | while read CurrentPath		#Gets a list of all folders.
 	do
@@ -73,7 +73,7 @@ function R {		# Recursive call of u | L | M functions
 	done
 }
 
-case "$1" in 										# Parses the input of the first argument when the script is run
+case "$1" in 							# Parses the input of the first argument when the script is run
 	-R) R "${Path}" ;;	
 	-U) U "${Path}" ;;
 	-UV|-VU) echo "Use function UV" ;;
